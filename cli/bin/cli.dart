@@ -3,44 +3,53 @@ import 'dart:io';
 import 'package:cli/cli.dart' as cli;
 
 void main(List<String> arguments) {
-  stdout.write('Введите число: ');
-  String? input1 = stdin.readLineSync();
+  firstInputLabel:
+  while (true) {
+    stdout.write('Введите число: \n');
+    String? input1 = stdin.readLineSync();
 
-  int? firstInput = int.tryParse(input1 ?? '');
-  if (firstInput == null) {
-    stdout.write('Вы ввели не число ');
-    return;
-  }
+    double? firstInput = double.tryParse(input1 ?? '');
+    if (firstInput == null) {
+      stdout.write('Вы ввели не число \n');
+      continue firstInputLabel;
+    }
 
-  stdout.write('Введите операцию: ');
-  String? inputoper = stdin.readLineSync();
-  switch (inputoper) {
-    case '+':
-    case '-':
-    case '*':
-    case '/':
-    default:
-      stdout.write('Вы ввели не операцию \n');
-  }
+    stdout.write('Введите операцию: \n');
+    String? inputoper = stdin.readLineSync();
+    switch (inputoper) {
+      case '%':
+      case '+':
+      case '-':
+      case '*':
+      case '/':
+        break;
+      default:
+        stdout.write('Вы ввели не операцию \n');
+        continue firstInputLabel;
+    }
 
-  stdout.write('Введите второе число: ');
-  String? input2 = stdin.readLineSync();
+    stdout.write('Введите второе число: \n');
+    String? input2 = stdin.readLineSync();
 
-  int? secondInput = int.tryParse(input2 ?? '');
-  if (secondInput == null) {
-    stdout.write('Вы ввели не число ');
-    return;
+    double? secondInput = double.tryParse(input2 ?? '');
+    if (secondInput == null) {
+      stdout.write('Вы ввели не число \n');
+      continue firstInputLabel;
+    }
+    double? result;
+    switch (inputoper) {
+      case '%':
+        result = ((firstInput * 0.01) * secondInput);
+      case '+':
+        result = (firstInput + secondInput);
+      case '-':
+        result = (firstInput - secondInput);
+      case '*':
+        result = (firstInput * secondInput);
+      case '/':
+        result = (firstInput / secondInput);
+    }
+    stdout.write(result!.toStringAsFixed(2));
+    break;
   }
-  String? result;
-  switch (inputoper) {
-    case '+':
-      result = (firstInput + secondInput).toString();
-    case '-':
-      result = (firstInput - secondInput).toString();
-    case '*':
-      result = (firstInput * secondInput).toString();
-    case '/':
-      result = (firstInput / secondInput).toString();
-  }
-  stdout.write(result);
 }
